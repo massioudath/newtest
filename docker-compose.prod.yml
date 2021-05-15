@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/codes
+      - satic_files:/static
+      - media_files:/media
+    expose:
+      - 8000
+    depends_on:
+      - db
+    env_file:
+      - ./settings/.env
+    network_mode: host
+  db:
+    image: postgres  
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust    
+      - POSTGRES_ALLOW_HOST=localhost
+    network_mode: host
+   
+  nginx:
+    build: ./nginx 
+    volumes:
+      - satic_files:/static
+      - media_files:/media
+    ports: 
+      - 80:80
+    depends_on:
+      - web
+    network_mode: host 
+  redis:
+   restart: always
+   image: redis:latest
+   ports:
+     - 6379:6379
+   volumes:
+     - redisdata:/data  
+   network_mode: host
+
+volumes:
+  satic_files:
+  media_files:
+  redisdata: 

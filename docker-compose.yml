@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/codes
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - ./settings/.env
+    network_mode: host
+  db:
+    image: postgres:12
+    #restart: always
+   # ports:
+    #  - 5434:5434   
+    #environment:
+      #- POSTGRES_PASSWORD=password
+     # - POSTGRES_HOST_AUTH_METHOD=trust    
+      #- POSTGRES_ALLOW_HOST=localhost
+    network_mode: host
+   
+  
