@@ -32,6 +32,6 @@ jobs:
       run: docker-compose -f docker-compose.prod.yml up -d     
     - name: Restart nginx
       run:
-          service nginx start  
+         sudo service nginx start  
 
 
