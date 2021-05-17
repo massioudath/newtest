@@ -1,0 +1,39 @@
+# This is a basic workflow to help you get started with Actions
+name: internet.bj-backend ci
+'on':
+  push:
+    branches:
+      - master
+jobs:
+  test: 
+    runs-on: ubuntu-latest
+    outputs:
+      customtag: ${{steps.tager.outputs.tag}}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup PostgreSQL
+      uses: Harmon758/postgresql-action@v1.0.0
+      with:
+        postgresql version: 12
+        postgresql db: massdb
+        postgresql user: mass
+        postgresql password: password 
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+    
+    - name: Run Tests
+      run: 
+        source env/bin/activate 
+        python manage.py test
+        python manage.py migrate 
+    - name: Run Dockerfile
+      uses:  actions/checkout@v2
+    - name: Run docker-compose stack
+      run: docker-compose -f docker-compose.prod.yml up -d
+      
+    - name: Restart nginx
+      uses: docker://docker
+      with:
+        args: docker restart nginx  
+
+
