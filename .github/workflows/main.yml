@@ -30,9 +30,9 @@ jobs:
       uses:  actions/checkout@v2
     - name: Run docker-compose stack
       run: docker-compose -f docker-compose.prod.yml up -d     
-    - name: Restart nginx
-      uses: docker://docker
-      with:
-        args: docker restart nginx  
+    - name: Set up nginx
+      run:
+        docker image build -t mynginx .
+        service nginx start  
 
 
