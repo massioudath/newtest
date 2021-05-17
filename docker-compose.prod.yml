@@ -33,7 +33,7 @@ services:
       - 80:80
     depends_on:
       - web
-    network_mode: host 
+    #network_mode: host 
   redis:
    restart: always
    image: redis:latest
