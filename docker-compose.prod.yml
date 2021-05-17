@@ -14,7 +14,7 @@ services:
       - db
     env_file:
       - ./settings/.env
-    network_mode: host
+    #network_mode: host
   db:
     image: postgres  
     expose:
@@ -22,7 +22,7 @@ services:
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust    
       - POSTGRES_ALLOW_HOST=localhost
-    network_mode: host
+    #network_mode: host
    
   nginx:
     build: ./nginx 
@@ -41,7 +41,7 @@ services:
      - 6379:6379
    volumes:
      - redisdata:/data  
-   network_mode: host
+   #network_mode: host
 
 volumes:
   satic_files:
